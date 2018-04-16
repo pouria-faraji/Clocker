@@ -1,7 +1,8 @@
-package com.blacksite.clocker
+package com.blacksite.clocker.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.blacksite.clocker.R
 
 class MainActivity : AppCompatActivity() {
 
