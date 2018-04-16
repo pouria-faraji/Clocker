@@ -1,11 +1,12 @@
 package com.blacksite.clocker.activity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import com.blacksite.clocker.R
 import java.util.*
-import java.util.concurrent.Executors
 import kotlin.concurrent.timerTask
 
 class SplashActivity : AppCompatActivity() {
@@ -17,20 +18,17 @@ class SplashActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
 
+        Handler().postDelayed({
+            val intent_welcome = Intent(this@SplashActivity,
+                    MainActivity::class.java)
+            this.finish()
+        }, 5000)
     }
 
     fun startAnimation():Unit {
 
     }
 
-    inline fun Timer.schedule(
-            delay: Long,
-            crossinline action: TimerTask.() -> Unit
-    ): TimerTask {
-        val task = timerTask(action)
-        schedule(task, delay)
-        return task
-    }
     public override fun onPause() {
         super.onPause()
         Log.e("logger", "onPause")
