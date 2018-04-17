@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#00000000"
+    android:id="@+id/main_layout"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.blacksite.clocker.activity.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+
+    <RelativeLayout
+        android:id="@+id/clock_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/main_activity_margin"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="@dimen/main_activity_margin"
+        android:layout_marginStart="@dimen/main_activity_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+        <ImageView
+            android:id="@+id/clock_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/wallpaper"/>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@drawable/clock_background_rounded_frame"/>-->
+        <ImageView
+            android:id="@+id/clock_main_imageview"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/splash"/>
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/main_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="@dimen/main_grid_spacing"
+        android:verticalSpacing="@dimen/main_grid_spacing"
+        android:numColumns="3"
+        android:background="@drawable/clock_main_background"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="@dimen/main_activity_margin"
+        android:layout_marginEnd="@dimen/main_activity_margin"
+        android:layout_marginStart="@dimen/main_activity_margin"
+        app:layout_constraintTop_toBottomOf="@+id/clock_main_layout"/>
+
+</LinearLayout>
