@@ -25,6 +25,10 @@ import com.blacksite.clocker.application.App
 import com.blacksite.clocker.application.Constants
 import com.blacksite.clocker.application.PrefManager
 import com.blacksite.clocker.model.`object`.Face
+import android.content.ComponentName
+import android.widget.RemoteViews
+import android.appwidget.AppWidgetManager
+import com.blacksite.clocker.widget.MyWidgetProvider
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +37,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var faceList = ArrayList<Item>()
     private var prefManager: PrefManager? = null
     var face = Face()
+
+    var remoteViews:RemoteViews? = null
+    var thisWidget:ComponentName? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +56,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Your widget has been created.", Snackbar.LENGTH_LONG)
                     .setAction("Widget", null).show()
+            val appWidgetManager = AppWidgetManager.getInstance(this)
+            appWidgetManager.updateAppWidget(thisWidget, remoteViews)
+
         }
     }
     override fun onResume() {
@@ -62,6 +72,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         adapter!!.notifyDataSetChanged()
 
         clock_face_imageview.setImageResource(faceList[currentFacePosition].image!!)
+        updateWidget(currentFacePosition)
+
     }
     fun prepareAdapter(){
         faceList = face.loadFacesAsGridItem()
@@ -77,7 +89,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             clock_face_imageview.setImageResource(faceList[position].image!!)
             prefManager!!.facePosition = position
+
+            updateWidget(position)
         }
+    }
+    fun updateWidget(facePosition:Int){
+        remoteViews = RemoteViews(this.packageName, R.layout.widget)
+        thisWidget = ComponentName(this, MyWidgetProvider::class.java)
+        remoteViews!!.setImageViewResource(R.id.clock_face_imageview_widget, faceList[facePosition].image!!)
     }
     fun prepareUI(){
         clock_face_imageview.layoutParams.height = Global.getAppWidth()/2
