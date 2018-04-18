@@ -62,7 +62,6 @@
         android:layout_height="match_parent"
         android:horizontalSpacing="@dimen/main_grid_spacing"
         android:verticalSpacing="@dimen/main_grid_spacing"
-        android:numColumns="3"
         android:listSelector="@drawable/item_background"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="@dimen/main_activity_margin"

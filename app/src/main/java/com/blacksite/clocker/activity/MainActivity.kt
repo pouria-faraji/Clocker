@@ -17,21 +17,14 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import com.blacksite.clocker.application.Global
 import com.blacksite.clocker.model.Item
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
 import android.graphics.drawable.BitmapDrawable
-import android.R.attr.bitmap
-import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
 import android.graphics.Bitmap
-import android.view.View
-import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.Toast
 import com.blacksite.clocker.application.App
+import com.blacksite.clocker.application.Constants
 import com.blacksite.clocker.application.PrefManager
+import com.blacksite.clocker.model.`object`.Face
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -39,12 +32,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var adapter: ItemAdapter? = null
     var faceList = ArrayList<Item>()
     private var prefManager: PrefManager? = null
+    var face = Face()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setTitle("Clocker")
+        supportActionBar!!.title = "Clocker"
 
         prefManager = PrefManager(App.appContext!!)
 
@@ -56,10 +50,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Snackbar.make(view, "Your widget has been created.", Snackbar.LENGTH_LONG)
                     .setAction("Widget", null).show()
         }
-
-
     }
-
     override fun onResume() {
         super.onResume()
         prepareData()
@@ -73,23 +64,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clock_face_imageview.setImageResource(faceList[currentFacePosition].image!!)
     }
     fun prepareAdapter(){
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash_red))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash_red))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
-        faceList.add(Item(R.drawable.splash))
+        faceList = face.loadFacesAsGridItem()
 
         adapter = ItemAdapter(this, faceList)
 
-
+        main_grid.numColumns = Constants.NUMBER_ITEMS_EACH_ROW
         main_grid.adapter = adapter
 
         main_grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
@@ -122,7 +101,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 , mpaint)// Round Image Corner 100 100 100 100
 
         clock_wallpaper.setImageBitmap(imageRounded)
-
     }
     fun prepareDrawer(){
         val toggle = ActionBarDrawerToggle(
