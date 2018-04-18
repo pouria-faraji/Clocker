@@ -30,20 +30,30 @@
             android:id="@+id/clock_wallpaper"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_margin="10dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/wallpaper"/>
+            android:scaleType="matrix"/>
         <!--<View-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
             <!--android:background="@drawable/clock_background_rounded_frame"/>-->
         <ImageView
-            android:id="@+id/clock_main_imageview"
+            android:id="@+id/clock_face_imageview"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
             android:layout_centerInParent="true"
             android:src="@drawable/splash"/>
+        <AnalogClock
+            android:id="@+id/clock"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:dial="@android:color/transparent"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:id="@+id/clock_dial_imageview"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
     <GridView
@@ -53,8 +63,8 @@
         android:horizontalSpacing="@dimen/main_grid_spacing"
         android:verticalSpacing="@dimen/main_grid_spacing"
         android:numColumns="3"
-        android:background="@drawable/clock_main_background"
-        android:layout_marginTop="0dp"
+        android:listSelector="@drawable/item_background"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="@dimen/main_activity_margin"
         android:layout_marginEnd="@dimen/main_activity_margin"
         android:layout_marginStart="@dimen/main_activity_margin"

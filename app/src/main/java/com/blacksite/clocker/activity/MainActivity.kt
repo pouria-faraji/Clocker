@@ -26,12 +26,19 @@ import android.graphics.RectF
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
 import android.graphics.Bitmap
-
-
-
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.Toast
+import com.blacksite.clocker.application.App
+import com.blacksite.clocker.application.PrefManager
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    var adapter: ItemAdapter? = null
+    var faceList = ArrayList<Item>()
+    private var prefManager: PrefManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +46,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         supportActionBar!!.setTitle("Clocker")
 
+        prefManager = PrefManager(App.appContext!!)
+
         prepareDrawer()
         prepareUI()
         prepareAdapter()
+
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Your widget has been created.", Snackbar.LENGTH_LONG)
                     .setAction("Widget", null).show()
@@ -50,35 +60,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        prepareData()
+    }
+
+    fun prepareData(){
+        var currentFacePosition = prefManager!!.facePosition
+        adapter!!.makeAllUnselect(currentFacePosition)
+        adapter!!.notifyDataSetChanged()
+
+        clock_face_imageview.setImageResource(faceList[currentFacePosition].image!!)
+    }
     fun prepareAdapter(){
-        var adapter: ItemAdapter? = null
-        var itemsList = ArrayList<Item>()
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash_red))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash_red))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
+        faceList.add(Item(R.drawable.splash))
 
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
-        itemsList.add(Item(R.drawable.splash))
+        adapter = ItemAdapter(this, faceList)
 
-        adapter = ItemAdapter(this, itemsList)
 
         main_grid.adapter = adapter
+
+        main_grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+            adapter!!.makeAllUnselect(position)
+            adapter!!.notifyDataSetChanged()
+
+            clock_face_imageview.setImageResource(faceList[position].image!!)
+            prefManager!!.facePosition = position
+        }
     }
     fun prepareUI(){
-        clock_main_imageview.layoutParams.height = Global.getAppWidth()/2
-        clock_main_imageview.layoutParams.width = Global.getAppWidth()/2
+        clock_face_imageview.layoutParams.height = Global.getAppWidth()/2
+        clock_face_imageview.layoutParams.width = Global.getAppWidth()/2
 
         clock_main_layout.layoutParams.height = Global.getAppWidth()/2
         clock_wallpaper.layoutParams.height = Global.getAppWidth()/2
-
 
         var wallpaperManager: WallpaperManager = WallpaperManager.getInstance(this)
         var wallpaperDrawable = wallpaperManager.drawable
@@ -90,31 +117,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val mpaint = Paint()
         mpaint.isAntiAlias = true
         mpaint.shader = BitmapShader(mbitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-        canvas.drawRoundRect(RectF(0f, 0f, mbitmap.width.toFloat(), mbitmap.height.toFloat()), 50f, 50F, mpaint)// Round Image Corner 100 100 100 100
-        canvas.drawRoundRect(RectF(0f, 0f, mbitmap.width.toFloat(), mbitmap.height.toFloat()), 50f, 50F, mpaint)// Round Image Corner 100 100 100 100
+//        canvas.drawRoundRect(RectF(0f, 0f, mbitmap.width.toFloat(), mbitmap.height.toFloat()), 70f, 70F, mpaint)// Round Image Corner 100 100 100 100
+        canvas.drawRoundRect(RectF(0f, 0f, (Global.getAppWidth()-(2*Global.dp_to_px(8))).toFloat(), clock_wallpaper.layoutParams.height.toFloat()), Global.dp_to_px(8).toFloat(), Global.dp_to_px(8).toFloat()
+                , mpaint)// Round Image Corner 100 100 100 100
 
         clock_wallpaper.setImageBitmap(imageRounded)
-
-
-//        val output = Bitmap.createBitmap(mbitmap.width, mbitmap
-//                .height, Bitmap.Config.ARGB_8888)
-//        val canvas2 = Canvas(output)
-//
-//        val color = -0xbdbdbe
-//        val paint = Paint()
-//        val rect = Rect(0, 0, mbitmap.width, mbitmap.height)
-//        val rectF = RectF(rect)
-//        val roundPx = 100f
-//
-//        paint.isAntiAlias = true
-//        canvas2.drawARGB(0, 0, 0, 0)
-//        paint.color = color
-//        canvas2.drawRoundRect(rectF, roundPx, roundPx, paint)
-//
-//        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-//        canvas2.drawBitmap(mbitmap, rect, rect, paint)
-//
-//        clock_wallpaper.setImageBitmap(output)
 
     }
     fun prepareDrawer(){

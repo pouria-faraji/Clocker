@@ -1,6 +1,7 @@
 package com.blacksite.clocker.adapter
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,27 @@ import android.widget.RelativeLayout
 import com.blacksite.clocker.application.Constants
 
 
+
+
+
+
+
 /**
  * Created by p.faraji on 4/17/2018.
  */
 class ItemAdapter:BaseAdapter {
     var context: Context? = null
     var itemsList = ArrayList<Item>()
+    var hashMapSelected: HashMap<Int, Boolean>? = null
 
     constructor(context: Context?, itemsList: ArrayList<Item>) : super() {
         this.context = context
         this.itemsList = itemsList
+
+        hashMapSelected = HashMap()
+        for (i in 0 until itemsList.size) {
+            hashMapSelected!!.put(i, false)
+        }
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -37,9 +49,22 @@ class ItemAdapter:BaseAdapter {
         val params1 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Global.getAppWidth()/Constants.NUMBER_ITEMS_EACH_ROW)
         itemView.layoutItem.layoutParams = params1
 
+        if(hashMapSelected!![position] == true){
+            itemView.layoutItem.background = ContextCompat.getDrawable(context, R.drawable.item_background_selected)
+        }else{
+            itemView.layoutItem.background = ContextCompat.getDrawable(context, R.drawable.item_background)
+        }
+
         return itemView
     }
 
+    fun makeAllUnselect(position: Int) {
+        hashMapSelected!!.put(position, true)
+        for (i in 0 until hashMapSelected!!.size) {
+            if (i != position)
+                hashMapSelected!!.put(i, false)
+        }
+    }
     override fun getItem(position: Int): Any {
         return itemsList[position]
     }
