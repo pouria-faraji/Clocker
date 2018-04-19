@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="@dimen/widget_margin"
     android:background="#00000000">
     <ImageView
         android:id="@+id/clock_face_imageview_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/splash"/>
-    <AnalogClock
-        android:id="@+id/clock_widget"
+        android:layout_centerInParent="true"
+        />
+    <ImageView
+        android:id="@+id/clock_dial_imageview_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dial="@android:color/transparent"/>
+        android:layout_centerInParent="true"/>
+    <AnalogClock
+        android:id="@+id/hand_1_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dial="@drawable/transparent_512"
+        android:hand_minute="@drawable/minute_hand"
+        android:hand_hour="@drawable/hour_hand"/>
+    <AnalogClock
+        android:id="@+id/hand_2_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dial="@drawable/transparent_512"
+        android:hand_minute="@drawable/minute_hand"
+        android:hand_hour="@drawable/hour_hand"
+        android:visibility="gone"/>
+    <AnalogClock
+        android:id="@+id/hand_3_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dial="@drawable/transparent_512"
+        android:hand_minute="@drawable/minute_hand"
+        android:hand_hour="@drawable/hour_hand"
+        android:visibility="gone"/>
+    <AnalogClock
+        android:id="@+id/hand_4_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dial="@drawable/transparent_512"
+        android:hand_minute="@drawable/minute_hand"
+        android:hand_hour="@drawable/hour_hand"
+        android:visibility="gone"/>
+
 </RelativeLayout>

@@ -33,8 +33,8 @@ class Global {
         }
 
         fun dp_to_px(dp: Int): Int {
-            val r = App.appContext!!.getResources()
-            val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.getDisplayMetrics())
+            val r = App.appContext!!.resources
+            val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics)
             return px.toInt()
         }
     }

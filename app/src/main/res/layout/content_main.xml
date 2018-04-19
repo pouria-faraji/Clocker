@@ -35,26 +35,31 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
             <!--android:background="@drawable/clock_background_rounded_frame"/>-->
-        <ImageView
-            android:id="@+id/clock_face_imageview"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/splash"/>
-        <AnalogClock
-            android:id="@+id/clock"
+        <RelativeLayout
+            android:id="@+id/clock_canvas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:dial="@drawable/transparent_512"
-            android:hand_minute="@drawable/minute_hand"
-            android:hand_hour="@drawable/hour_hand"
-            android:layout_centerInParent="true"/>
-        <ImageView
-            android:id="@+id/clock_dial_imageview"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true">
+            <ImageView
+                android:id="@+id/clock_face_imageview"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerInParent="true"
+                android:cropToPadding="true"
+                android:src="@drawable/splash"/>
+            <ImageView
+                android:id="@+id/clock_dial_imageview"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+        <include
+            layout="@layout/clocks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 

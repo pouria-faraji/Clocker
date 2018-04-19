@@ -26,6 +26,12 @@ class PrefManager(internal var _context: Context) {
             editor.putInt(FACE_POSITION, position)
             editor.commit()
         }
+    var dialPosition: Int
+        get() = pref.getInt(DIAL_POSITION, 0)
+        set(position){
+            editor.putInt(DIAL_POSITION, position)
+            editor.commit()
+        }
     init {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         editor = pref.edit()
@@ -39,5 +45,6 @@ class PrefManager(internal var _context: Context) {
         private val IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch"
 
         private val FACE_POSITION = "facePosition"
+        private val DIAL_POSITION = "dialPosition"
     }
 }

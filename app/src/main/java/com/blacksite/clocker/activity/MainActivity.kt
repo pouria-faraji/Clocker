@@ -28,15 +28,20 @@ import com.blacksite.clocker.model.`object`.Face
 import android.content.ComponentName
 import android.widget.RemoteViews
 import android.appwidget.AppWidgetManager
+import com.blacksite.clocker.model.`object`.Dial
 import com.blacksite.clocker.widget.MyWidgetProvider
+import android.graphics.BitmapFactory
+
+
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var adapter: ItemAdapter? = null
-    var faceList = ArrayList<Item>()
+    var itemList = ArrayList<Item>()
     private var prefManager: PrefManager? = null
     var face = Face()
+    var dial = Dial()
 
     var remoteViews:RemoteViews? = null
     var thisWidget:ComponentName? = null
@@ -51,7 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         prepareDrawer()
         prepareUI()
-        prepareAdapter()
+        prepareAdapter(face)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Your widget has been created.", Snackbar.LENGTH_LONG)
@@ -63,22 +68,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     override fun onResume() {
         super.onResume()
-        prepareData()
     }
 
-    fun prepareData(){
+    fun prepareData(model:Any){
         var currentFacePosition = prefManager!!.facePosition
-        adapter!!.makeAllUnselect(currentFacePosition)
+        var currentDialPosition = prefManager!!.dialPosition
+        if(model is Face){
+            adapter!!.makeAllUnselect(currentFacePosition)
+        }else if(model is Dial){
+            adapter!!.makeAllUnselect(currentDialPosition)
+        }
         adapter!!.notifyDataSetChanged()
 
-        clock_face_imageview.setImageResource(faceList[currentFacePosition].image!!)
-        updateWidget(currentFacePosition)
+        clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
+        clock_dial_imageview.setImageResource(dial.loadDialsAsGridItem()[currentDialPosition].image!!)
+        updateWidget(currentFacePosition, currentDialPosition)
 
     }
-    fun prepareAdapter(){
-        faceList = face.loadFacesAsGridItem()
+    fun prepareAdapter(model:Any){
+        if(model is Face){
+            itemList = face.loadFacesAsGridItem()
+        }else if(model is Dial){
+            itemList = dial.loadDialsAsGridItem()
+        }
 
-        adapter = ItemAdapter(this, faceList)
+        adapter = ItemAdapter(this, itemList)
 
         main_grid.numColumns = Constants.NUMBER_ITEMS_EACH_ROW
         main_grid.adapter = adapter
@@ -87,20 +101,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             adapter!!.makeAllUnselect(position)
             adapter!!.notifyDataSetChanged()
 
-            clock_face_imageview.setImageResource(faceList[position].image!!)
-            prefManager!!.facePosition = position
+            if(model is Face){
+//                clock_face_imageview.setImageResource(itemList[position].image!!)
+                prefManager!!.facePosition = position
+            }else if(model is Dial){
+                prefManager!!.dialPosition = position
+            }
+            prepareData(model)
 
-            updateWidget(position)
+//            updateWidget(position)
         }
+
+        prepareData(model)
     }
-    fun updateWidget(facePosition:Int){
+    fun updateWidget(facePosition:Int, dialPosition:Int){
         remoteViews = RemoteViews(this.packageName, R.layout.widget)
         thisWidget = ComponentName(this, MyWidgetProvider::class.java)
-        remoteViews!!.setImageViewResource(R.id.clock_face_imageview_widget, faceList[facePosition].image!!)
+
+        val faceImage = BitmapFactory.decodeResource(resources, face.loadFacesAsGridItem()[facePosition].image!!)
+        val resized = Bitmap.createScaledBitmap(faceImage, faceImage.width/20, faceImage.height/20, true)
+//        remoteViews!!.setImageViewResource(R.id.clock_face_imageview_widget, face.loadFacesAsGridItem()[facePosition].image!!)
+        clock_canvas.buildDrawingCache()
+        remoteViews!!.setImageViewBitmap(R.id.clock_face_imageview_widget, clock_canvas.drawingCache)
+
+
+//        remoteViews!!.setImageViewResource(R.id.clock_dial_imageview_widget, dial.loadDialsAsGridItem()[dialPosition].image!!)
+//        val padding = clock_face_imageview.layoutParams.width/6
+//        val padding = Global.dp_to_px(40)
+//        remoteViews!!.setViewPadding(R.id.clock_face_imageview_widget, padding, padding, padding, padding)
     }
     fun prepareUI(){
         clock_face_imageview.layoutParams.height = Global.getAppWidth()/2
         clock_face_imageview.layoutParams.width = Global.getAppWidth()/2
+        val padding = clock_face_imageview.layoutParams.width/6
+        clock_face_imageview.setPadding(padding, padding, padding, padding)
+
+        clock_dial_imageview.layoutParams.height = Global.getAppWidth()/2
+        clock_dial_imageview.layoutParams.width = Global.getAppWidth()/2
 
         clock_main_layout.layoutParams.height = Global.getAppWidth()/2
         clock_wallpaper.layoutParams.height = Global.getAppWidth()/2
@@ -137,11 +174,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.main, menu)
+//        return true
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
@@ -156,20 +193,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
+            R.id.nav_face -> {
+                prepareAdapter(face)
             }
-            R.id.nav_gallery -> {
+            R.id.nav_dial -> {
+                prepareAdapter(dial)
             }
-            R.id.nav_slideshow -> {
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
+            R.id.nav_hand -> {
             }
         }
 
