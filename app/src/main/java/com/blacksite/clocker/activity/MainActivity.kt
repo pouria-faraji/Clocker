@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun prepareUI(){
         clock_face_imageview.layoutParams.height = Global.getAppWidth()/2
         clock_face_imageview.layoutParams.width = Global.getAppWidth()/2
-        val padding = clock_face_imageview.layoutParams.width/6
+        val padding = clock_face_imageview.layoutParams.width/5
         clock_face_imageview.setPadding(padding, padding, padding, padding)
 
         clock_dial_imageview.layoutParams.height = Global.getAppWidth()/2

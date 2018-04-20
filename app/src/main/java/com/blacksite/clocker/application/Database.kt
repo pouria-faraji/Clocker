@@ -15,11 +15,11 @@ class Database {
     }
     fun setupFace(){
         var faceList = ArrayList<Face>()
-        faceList.add(Face(R.drawable.skull_200))
-        faceList.add(Face(R.drawable.skull_200))
         faceList.add(Face(R.drawable.skull_512))
-        faceList.add(Face(R.drawable.skull_512))
-        faceList.add(Face(R.drawable.skull_512))
+        faceList.add(Face(R.drawable.jellyfish_512))
+        faceList.add(Face(R.drawable.lion_512))
+        faceList.add(Face(R.drawable.tiger_512))
+        faceList.add(Face(R.drawable.panther_512))
         for (face in faceList){
             face.insert()
         }
