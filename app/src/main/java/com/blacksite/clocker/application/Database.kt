@@ -27,6 +27,7 @@ class Database {
     }
     fun setupDial(){
         var dialList = ArrayList<Dial>()
+        dialList.add(Dial(R.drawable.transparent_512))
         dialList.add(Dial(R.drawable.dial_1))
         dialList.add(Dial(R.drawable.dial_2))
         for (dial in dialList){
