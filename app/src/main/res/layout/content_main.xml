@@ -41,6 +41,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
             <ImageView
+                android:id="@+id/clock_dial_imageview"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="0dp"
+                android:layout_centerInParent="true"/>
+            <ImageView
                 android:id="@+id/clock_face_imageview"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -48,12 +54,6 @@
                 android:layout_centerInParent="true"
                 android:cropToPadding="true"
                 android:src="@drawable/splash"/>
-            <ImageView
-                android:id="@+id/clock_dial_imageview"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="0dp"
-                android:layout_centerInParent="true"/>
         </RelativeLayout>
 
         <include
