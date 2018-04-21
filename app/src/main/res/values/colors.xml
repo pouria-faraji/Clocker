@@ -9,4 +9,6 @@
 
     <color name="clock_main_background">#b3b3b3</color>
     <color name="item_selected">#cc3535</color>
+
+    <color name="red">#007344</color>
 </resources>

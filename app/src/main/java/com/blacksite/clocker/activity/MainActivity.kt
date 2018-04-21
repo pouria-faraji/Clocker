@@ -31,6 +31,8 @@ import android.appwidget.AppWidgetManager
 import com.blacksite.clocker.model.`object`.Dial
 import com.blacksite.clocker.widget.MyWidgetProvider
 import android.graphics.BitmapFactory
+import android.support.v4.content.ContextCompat
+import android.graphics.drawable.Drawable
 
 
 
@@ -82,6 +84,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
         clock_dial_imageview.setImageResource(dial.loadDialsAsGridItem()[currentDialPosition].image!!)
+
+//        clock_face_imageview.setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+//        clock_face_imageview.setColorFilter(Color.parseColor("#cc3535"))
+        clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, ContextCompat.getColor(this, R.color.red))
+
+
         updateWidget(currentFacePosition, currentDialPosition)
 
     }
@@ -135,6 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clock_face_imageview.layoutParams.width = Global.getAppWidth()/2
         val padding = clock_face_imageview.layoutParams.width/5
         clock_face_imageview.setPadding(padding, padding, padding, padding)
+
 
         clock_dial_imageview.layoutParams.height = Global.getAppWidth()/2
         clock_dial_imageview.layoutParams.width = Global.getAppWidth()/2

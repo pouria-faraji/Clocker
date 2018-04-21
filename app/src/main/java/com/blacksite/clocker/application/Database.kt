@@ -15,6 +15,7 @@ class Database {
     }
     fun setupFace(){
         var faceList = ArrayList<Face>()
+        faceList.add(Face(R.drawable.transparent_512))
         faceList.add(Face(R.drawable.skull_512))
         faceList.add(Face(R.drawable.jellyfish_512))
         faceList.add(Face(R.drawable.lion_512))
@@ -27,7 +28,7 @@ class Database {
     fun setupDial(){
         var dialList = ArrayList<Dial>()
         dialList.add(Dial(R.drawable.dial_1))
-        dialList.add(Dial(R.drawable.dial_1))
+        dialList.add(Dial(R.drawable.dial_2))
         for (dial in dialList){
             dial.insert()
         }
