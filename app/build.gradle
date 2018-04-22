@@ -38,4 +38,6 @@ dependencies {
 
     compile 'org.greenrobot:greendao:3.2.2' // add library
 
+    compile 'com.github.QuadFlask:colorpicker:0.0.13'
+
 }

@@ -3,6 +3,10 @@ package com.blacksite.clocker.application
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
+import com.blacksite.clocker.R
 import com.blacksite.clocker.model.db.*
 
 

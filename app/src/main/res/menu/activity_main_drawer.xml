@@ -17,10 +17,9 @@
             android:icon="@drawable/ic_watch_later_black_24dp"
             android:title="Hand" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools"
-            android:visible="false"/>
+            android:id="@+id/nav_color"
+            android:icon="@drawable/ic_color_lens_black_24dp"
+            android:title="Color"/>
     </group>
 
     <item android:title="Communicate" android:visible="false">

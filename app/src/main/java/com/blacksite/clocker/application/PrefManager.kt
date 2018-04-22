@@ -21,15 +21,27 @@ class PrefManager(internal var _context: Context) {
         }
 
     var facePosition: Int
-        get() = pref.getInt(FACE_POSITION, 0)
+        get() = pref.getInt(FACE_POSITION, 1)
         set(position){
             editor.putInt(FACE_POSITION, position)
             editor.commit()
         }
     var dialPosition: Int
-        get() = pref.getInt(DIAL_POSITION, 0)
+        get() = pref.getInt(DIAL_POSITION, 1)
         set(position){
             editor.putInt(DIAL_POSITION, position)
+            editor.commit()
+        }
+    var faceColor: String
+        get() = pref.getString(FACE_COLOR, "#000000")
+        set(color){
+            editor.putString(FACE_COLOR, color)
+            editor.commit()
+        }
+    var faceColorDialog: String
+        get() = pref.getString(FACE_COLOR_DIALOG, "#00fff4")
+        set(color){
+            editor.putString(FACE_COLOR_DIALOG, color)
             editor.commit()
         }
     init {
@@ -46,5 +58,7 @@ class PrefManager(internal var _context: Context) {
 
         private val FACE_POSITION = "facePosition"
         private val DIAL_POSITION = "dialPosition"
+        private val FACE_COLOR =  "faceColor"
+        private val FACE_COLOR_DIALOG =  "faceColorDialog"
     }
 }

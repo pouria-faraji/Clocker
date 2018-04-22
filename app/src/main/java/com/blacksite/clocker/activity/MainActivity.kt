@@ -28,13 +28,22 @@ import com.blacksite.clocker.model.`object`.Face
 import android.content.ComponentName
 import android.widget.RemoteViews
 import android.appwidget.AppWidgetManager
+import android.content.DialogInterface
 import com.blacksite.clocker.model.`object`.Dial
 import com.blacksite.clocker.widget.MyWidgetProvider
 import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.graphics.drawable.Drawable
-
-
+import android.content.Intent
+import android.util.Log
+import android.view.View
+import android.widget.AnalogClock
+import android.widget.Toast
+import com.flask.colorpicker.ColorPickerView
+import com.flask.colorpicker.OnColorChangedListener
+import com.flask.colorpicker.OnColorSelectedListener
+import com.flask.colorpicker.builder.ColorPickerClickListener
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -63,15 +72,55 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Your widget has been created.", Snackbar.LENGTH_LONG)
                     .setAction("Widget", null).show()
+            updateWidget()
             val appWidgetManager = AppWidgetManager.getInstance(this)
             appWidgetManager.updateAppWidget(thisWidget, remoteViews)
-
         }
+
+        face_color_btn.setOnClickListener(showColorClickListener)
+//		color_picker.addOnColorChangedListener { selectedColor ->
+//            // Handle on color change
+//            clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor("#" + Integer.toHexString(selectedColor)))
+//            Log.d("ColorPicker", "onColorChanged: 0x" + Integer.toHexString(selectedColor))
+//        }
     }
-    override fun onResume() {
+
+       override fun onResume() {
         super.onResume()
     }
 
+    val showColorClickListener = View.OnClickListener { view ->
+        showColorDialog()
+    }
+    fun showColorDialog(){
+        ColorPickerDialogBuilder
+                .with(this)
+                .setTitle("Choose Color")
+                .initialColor(Color.parseColor(prefManager!!.faceColorDialog))
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(12)
+                .setOnColorChangedListener { selectedColor ->
+
+                }
+                .setOnColorSelectedListener { selectedColor ->
+
+                }
+                .setPositiveButton("Ok", ColorPickerClickListener(){
+                    dialog, selectedColor, allColors ->
+                    prefManager!!.faceColor = "#" + Integer.toHexString(selectedColor)
+                    prefManager!!.faceColorDialog = "#" + Integer.toHexString(selectedColor)
+                    clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor("#" + Integer.toHexString(selectedColor)))
+                })
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener(){
+                    dialog, which ->
+
+                })
+                .showAlphaSlider(false)
+                .showColorEdit(true)
+                .setColorEditTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_bright))
+                .build()
+                .show()
+    }
     fun prepareData(model:Any){
         var currentFacePosition = prefManager!!.facePosition
         var currentDialPosition = prefManager!!.dialPosition
@@ -84,13 +133,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
         clock_dial_imageview.setImageResource(dial.loadDialsAsGridItem()[currentDialPosition].image!!)
+        clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
+
 
 //        clock_face_imageview.setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
 //        clock_face_imageview.setColorFilter(Color.parseColor("#cc3535"))
-        clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, ContextCompat.getColor(this, R.color.red))
 
 
-        updateWidget(currentFacePosition, currentDialPosition)
+//        clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, ContextCompat.getColor(this, R.color.red))
+
+        updateWidget()
 
     }
     fun prepareAdapter(model:Any){
@@ -122,21 +174,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         prepareData(model)
     }
-    fun updateWidget(facePosition:Int, dialPosition:Int){
+    fun updateWidget(){
         remoteViews = RemoteViews(this.packageName, R.layout.widget)
         thisWidget = ComponentName(this, MyWidgetProvider::class.java)
 
-        val faceImage = BitmapFactory.decodeResource(resources, face.loadFacesAsGridItem()[facePosition].image!!)
-        val resized = Bitmap.createScaledBitmap(faceImage, faceImage.width/20, faceImage.height/20, true)
-//        remoteViews!!.setImageViewResource(R.id.clock_face_imageview_widget, face.loadFacesAsGridItem()[facePosition].image!!)
+        clock_canvas.destroyDrawingCache()
         clock_canvas.buildDrawingCache()
         remoteViews!!.setImageViewBitmap(R.id.clock_face_imageview_widget, clock_canvas.drawingCache)
 
+//        val intent = Intent(this, MyWidgetProvider::class.java)
+//        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+//        val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(thisWidget)
+//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+//        sendBroadcast(intent)
 
-//        remoteViews!!.setImageViewResource(R.id.clock_dial_imageview_widget, dial.loadDialsAsGridItem()[dialPosition].image!!)
-//        val padding = clock_face_imageview.layoutParams.width/6
-//        val padding = Global.dp_to_px(40)
-//        remoteViews!!.setViewPadding(R.id.clock_face_imageview_widget, padding, padding, padding, padding)
     }
     fun prepareUI(){
         clock_face_imageview.layoutParams.height = Global.getAppWidth()/2
@@ -203,12 +254,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_face -> {
+                main_grid.visibility = View.VISIBLE
+                color_btn_layout.visibility = View.GONE
                 prepareAdapter(face)
             }
             R.id.nav_dial -> {
+                main_grid.visibility = View.VISIBLE
+                color_btn_layout.visibility = View.GONE
                 prepareAdapter(dial)
             }
             R.id.nav_hand -> {
+                main_grid.visibility = View.VISIBLE
+                color_btn_layout.visibility = View.GONE
+            }
+            R.id.nav_color -> {
+                main_grid.visibility = View.GONE
+                color_btn_layout.visibility = View.VISIBLE
             }
         }
 
