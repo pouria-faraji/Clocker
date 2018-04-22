@@ -44,6 +44,18 @@ class PrefManager(internal var _context: Context) {
             editor.putString(FACE_COLOR_DIALOG, color)
             editor.commit()
         }
+    var dialColor: String
+        get() = pref.getString(DIAL_COLOR, "#ffffff")
+        set(color){
+            editor.putString(DIAL_COLOR, color)
+            editor.commit()
+        }
+    var dialColorDialog: String
+        get() = pref.getString(DIAL_COLOR_DIALOG, "#00fff4")
+        set(color){
+            editor.putString(DIAL_COLOR_DIALOG, color)
+            editor.commit()
+        }
     init {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         editor = pref.edit()
@@ -60,5 +72,7 @@ class PrefManager(internal var _context: Context) {
         private val DIAL_POSITION = "dialPosition"
         private val FACE_COLOR =  "faceColor"
         private val FACE_COLOR_DIALOG =  "faceColorDialog"
+        private val DIAL_COLOR =  "dialColor"
+        private val DIAL_COLOR_DIALOG =  "dialColorDialog"
     }
 }

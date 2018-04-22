@@ -81,12 +81,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="20dp"
         android:visibility="gone">
-        <Button
+        <RelativeLayout
             android:id="@+id/face_color_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Face Color" />
+            android:layout_margin="5dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/color_btn_background">
+            <com.blacksite.clocker.view.MuseoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:padding="20dp"
+                android:text="Face Color"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/dial_color_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/color_btn_background">
+            <com.blacksite.clocker.view.MuseoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:padding="20dp"
+                android:text="Dial Color"/>
+        </RelativeLayout>
+        <!--<Button-->
+            <!--android:id="@+id/face_color_btn"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Face Color" />-->
     </LinearLayout>
 
 </LinearLayout>

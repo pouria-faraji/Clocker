@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             appWidgetManager.updateAppWidget(thisWidget, remoteViews)
         }
 
-        face_color_btn.setOnClickListener(showColorClickListener)
+        face_color_btn.setOnClickListener(showFaceColorClickListener)
+        dial_color_btn.setOnClickListener(showDialColorClickListener)
 //		color_picker.addOnColorChangedListener { selectedColor ->
 //            // Handle on color change
 //            clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor("#" + Integer.toHexString(selectedColor)))
@@ -89,10 +90,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onResume()
     }
 
-    val showColorClickListener = View.OnClickListener { view ->
-        showColorDialog()
+    val showDialColorClickListener = View.OnClickListener { view ->
+        showDialColorDialog()
     }
-    fun showColorDialog(){
+    fun showDialColorDialog(){
+        ColorPickerDialogBuilder
+                .with(this)
+                .setTitle("Choose Color")
+                .initialColor(Color.parseColor(prefManager!!.dialColor))
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(12)
+                .setOnColorChangedListener { selectedColor ->
+
+                }
+                .setOnColorSelectedListener { selectedColor ->
+
+                }
+                .setPositiveButton("Ok", ColorPickerClickListener(){
+                    dialog, selectedColor, allColors ->
+                    prefManager!!.dialColor = "#" + Integer.toHexString(selectedColor)
+//                    prefManager!!.dialColorDialog = "#" + Integer.toHexString(selectedColor)
+//                    clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor("#" + Integer.toHexString(selectedColor)))
+                    clock_dial_imageview.setColorFilter(Color.parseColor("#" + Integer.toHexString(selectedColor)), PorterDuff.Mode.MULTIPLY)
+
+                })
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener(){
+                    dialog, which ->
+
+                })
+                .showAlphaSlider(false)
+                .showColorEdit(true)
+                .setColorEditTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_bright))
+                .build()
+                .show()
+    }
+    val showFaceColorClickListener = View.OnClickListener { view ->
+        showFaceColorDialog()
+    }
+    fun showFaceColorDialog(){
         ColorPickerDialogBuilder
                 .with(this)
                 .setTitle("Choose Color")
@@ -134,6 +169,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
         clock_dial_imageview.setImageResource(dial.loadDialsAsGridItem()[currentDialPosition].image!!)
         clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
+        clock_dial_imageview.setColorFilter(Color.parseColor(prefManager!!.dialColor), PorterDuff.Mode.MULTIPLY)
 
 
 //        clock_face_imageview.setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
