@@ -17,16 +17,22 @@ public class FaceDB {
     @Property(nameInDb = "image")
     private Integer image;
 
+    @Property(nameInDb = "image_white")
+    private Integer imageWhite;
 
-    @Generated(hash = 1905679901)
-    public FaceDB(Long id, Integer image) {
+
+
+    @Generated(hash = 1721146414)
+    public FaceDB(Long id, Integer image, Integer imageWhite) {
         this.id = id;
         this.image = image;
+        this.imageWhite = imageWhite;
     }
 
     @Generated(hash = 1258664545)
     public FaceDB() {
     }
+
 
 
     public Long getId() {
@@ -43,5 +49,13 @@ public class FaceDB {
 
     public void setImage(Integer image) {
         this.image = image;
+    }
+
+    public Integer getImageWhite() {
+        return this.imageWhite;
+    }
+
+    public void setImageWhite(Integer imageWhite) {
+        this.imageWhite = imageWhite;
     }
 }

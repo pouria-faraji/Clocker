@@ -5,7 +5,12 @@ package com.blacksite.clocker.model
  */
 class Item {
     var image: Int? = null
+    var imageWhite: Int? = null
     constructor(image: Int) {
         this.image = image
+    }
+    constructor(image: Int, imageWhite:Int) {
+        this.image = image
+        this.imageWhite = imageWhite
     }
 }

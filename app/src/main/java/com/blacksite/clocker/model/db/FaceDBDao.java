@@ -24,6 +24,7 @@ public class FaceDBDao extends AbstractDao<FaceDB, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Image = new Property(1, Integer.class, "image", false, "image");
+        public final static Property ImageWhite = new Property(2, Integer.class, "imageWhite", false, "image_white");
     }
 
 
@@ -40,7 +41,8 @@ public class FaceDBDao extends AbstractDao<FaceDB, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"face\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"image\" INTEGER);"); // 1: image
+                "\"image\" INTEGER," + // 1: image
+                "\"image_white\" INTEGER);"); // 2: imageWhite
     }
 
     /** Drops the underlying database table. */
@@ -62,6 +64,11 @@ public class FaceDBDao extends AbstractDao<FaceDB, Long> {
         if (image != null) {
             stmt.bindLong(2, image);
         }
+ 
+        Integer imageWhite = entity.getImageWhite();
+        if (imageWhite != null) {
+            stmt.bindLong(3, imageWhite);
+        }
     }
 
     @Override
@@ -77,6 +84,11 @@ public class FaceDBDao extends AbstractDao<FaceDB, Long> {
         if (image != null) {
             stmt.bindLong(2, image);
         }
+ 
+        Integer imageWhite = entity.getImageWhite();
+        if (imageWhite != null) {
+            stmt.bindLong(3, imageWhite);
+        }
     }
 
     @Override
@@ -88,7 +100,8 @@ public class FaceDBDao extends AbstractDao<FaceDB, Long> {
     public FaceDB readEntity(Cursor cursor, int offset) {
         FaceDB entity = new FaceDB( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1) // image
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // image
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2) // imageWhite
         );
         return entity;
     }
@@ -97,6 +110,7 @@ public class FaceDBDao extends AbstractDao<FaceDB, Long> {
     public void readEntity(Cursor cursor, FaceDB entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setImage(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setImageWhite(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
      }
     
     @Override

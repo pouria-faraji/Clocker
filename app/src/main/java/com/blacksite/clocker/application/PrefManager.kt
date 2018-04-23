@@ -50,10 +50,10 @@ class PrefManager(internal var _context: Context) {
             editor.putString(DIAL_COLOR, color)
             editor.commit()
         }
-    var dialColorDialog: String
-        get() = pref.getString(DIAL_COLOR_DIALOG, "#00fff4")
-        set(color){
-            editor.putString(DIAL_COLOR_DIALOG, color)
+    var whiteBackgroundCheck: Boolean
+        get() = pref.getBoolean(WHITE_BACKGROUND_CHECK, false)
+        set(check){
+            editor.putBoolean(WHITE_BACKGROUND_CHECK, check)
             editor.commit()
         }
     init {
@@ -73,6 +73,6 @@ class PrefManager(internal var _context: Context) {
         private val FACE_COLOR =  "faceColor"
         private val FACE_COLOR_DIALOG =  "faceColorDialog"
         private val DIAL_COLOR =  "dialColor"
-        private val DIAL_COLOR_DIALOG =  "dialColorDialog"
+        private val WHITE_BACKGROUND_CHECK =  "whiteBackgroundCheck"
     }
 }

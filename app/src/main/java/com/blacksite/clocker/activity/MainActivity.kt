@@ -38,6 +38,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.AnalogClock
+import android.widget.CompoundButton
 import android.widget.Toast
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
@@ -79,11 +80,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         face_color_btn.setOnClickListener(showFaceColorClickListener)
         dial_color_btn.setOnClickListener(showDialColorClickListener)
-//		color_picker.addOnColorChangedListener { selectedColor ->
-//            // Handle on color change
-//            clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor("#" + Integer.toHexString(selectedColor)))
-//            Log.d("ColorPicker", "onColorChanged: 0x" + Integer.toHexString(selectedColor))
-//        }
+        white_background_switch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener({
+            buttonView, isChecked ->
+            if(isChecked){
+                clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[prefManager!!.facePosition].imageWhite!!)
+                prefManager!!.whiteBackgroundCheck = true
+            }else{
+                clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[prefManager!!.facePosition].image!!)
+                prefManager!!.whiteBackgroundCheck = false
+            }
+            clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
+        }))
     }
 
        override fun onResume() {
@@ -166,17 +173,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         adapter!!.notifyDataSetChanged()
 
-        clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
+        if(prefManager!!.whiteBackgroundCheck){
+            clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].imageWhite!!)
+        }else{
+            clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
+        }
         clock_dial_imageview.setImageResource(dial.loadDialsAsGridItem()[currentDialPosition].image!!)
         clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
         clock_dial_imageview.setColorFilter(Color.parseColor(prefManager!!.dialColor), PorterDuff.Mode.MULTIPLY)
-
-
-//        clock_face_imageview.setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
-//        clock_face_imageview.setColorFilter(Color.parseColor("#cc3535"))
-
-
-//        clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, ContextCompat.getColor(this, R.color.red))
 
         updateWidget()
 
@@ -253,6 +257,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 , mpaint)// Round Image Corner 100 100 100 100
 
         clock_wallpaper.setImageBitmap(imageRounded)
+
+        white_background_switch.isChecked = prefManager!!.whiteBackgroundCheck
     }
     fun prepareDrawer(){
         val toggle = ActionBarDrawerToggle(
