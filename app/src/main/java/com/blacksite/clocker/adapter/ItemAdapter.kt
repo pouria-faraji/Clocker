@@ -42,7 +42,7 @@ class ItemAdapter:BaseAdapter {
 
         var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         var itemView = inflator.inflate(R.layout.item, null)
-        itemView.imgItem.setImageResource(item.image!!)
+        itemView.imgItem.setImageDrawable(Global.reduceImage(item.image!!))
         itemView.imgItem.layoutParams.width = ((0.7) * Global.getAppWidth()/Constants.NUMBER_ITEMS_EACH_ROW).toInt()
         itemView.imgItem.layoutParams.height = ((0.7) * Global.getAppWidth()/Constants.NUMBER_ITEMS_EACH_ROW).toInt()
 

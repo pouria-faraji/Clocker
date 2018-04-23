@@ -35,6 +35,7 @@ import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.graphics.drawable.Drawable
 import android.content.Intent
+import android.opengl.Visibility
 import android.util.Log
 import android.view.View
 import android.widget.AnalogClock
@@ -45,6 +46,7 @@ import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
+import kotlinx.android.synthetic.main.clocks.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -221,6 +223,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clock_canvas.destroyDrawingCache()
         clock_canvas.buildDrawingCache()
         remoteViews!!.setImageViewBitmap(R.id.clock_face_imageview_widget, clock_canvas.drawingCache)
+
+
+        remoteViews!!.setViewVisibility(R.id.hand_1_widget_grey, View.GONE)
+        remoteViews!!.setViewVisibility(R.id.hand_1_widget_red, View.VISIBLE)
+
+
+        hand_1_grey.visibility = View.GONE
+        hand_1_blue.visibility = View.VISIBLE
 
 //        val intent = Intent(this, MyWidgetProvider::class.java)
 //        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
