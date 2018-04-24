@@ -250,7 +250,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         clock_canvas.destroyDrawingCache()
         clock_canvas.buildDrawingCache()
-//        prefManager!!.cachedBitmap = Global.saveToInternalStorage(clock_canvas.drawingCache)
+        if(clock_canvas.drawingCache != null) {
+            prefManager!!.cachedBitmap = Global.saveToInternalStorage(clock_canvas.drawingCache)
+        }
         remoteViews!!.setImageViewBitmap(R.id.clock_face_imageview_widget, clock_canvas.drawingCache)
 
         hand.makeAllGoneWidget(Global.handList[prefManager!!.handPosition].analogClockWidget!!, remoteViews!!)

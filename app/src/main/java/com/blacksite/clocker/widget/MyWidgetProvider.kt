@@ -37,11 +37,13 @@ class MyWidgetProvider : AppWidgetProvider() {
             views = RemoteViews(context.packageName,
                     R.layout.widget)
 
-//            if(prefManager!!.cachedBitmap != "null") {
-//                views!!.setImageViewBitmap(R.id.clock_face_imageview_widget, Global.loadImageFromStorage(prefManager!!.cachedBitmap))
-//            }
-//
-//            hand.makeAllGoneWidget(hand.loadHands()[prefManager!!.handPosition].analogClockWidget!!, views!!)
+            if(prefManager!!.cachedBitmap != "null") {
+                Log.e("logger", prefManager!!.cachedBitmap)
+                views!!.setImageViewBitmap(R.id.clock_face_imageview_widget, Global.loadImageFromStorage(prefManager!!.cachedBitmap))
+//                views!!.setImageViewResource(R.id.clock_face_imageview_widget, R.drawable.splash_red)
+            }
+
+            hand.makeAllGoneWidget(hand.loadHands()[prefManager!!.handPosition].analogClockWidget!!, views!!)
 
 
             val choiceIntent = Intent(context, MainActivity::class.java)
