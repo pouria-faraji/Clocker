@@ -32,6 +32,12 @@ class PrefManager(internal var _context: Context) {
             editor.putInt(DIAL_POSITION, position)
             editor.commit()
         }
+    var handPosition: Int
+        get() = pref.getInt(HAND_POSITION, 0)
+        set(position){
+            editor.putInt(HAND_POSITION, position)
+            editor.commit()
+        }
     var faceColor: String
         get() = pref.getString(FACE_COLOR, "#000000")
         set(color){
@@ -56,6 +62,18 @@ class PrefManager(internal var _context: Context) {
             editor.putBoolean(WHITE_BACKGROUND_CHECK, check)
             editor.commit()
         }
+    var dialBackgroundCheck: Boolean
+        get() = pref.getBoolean(DIAL_BACKGROUND_CHECK, true)
+        set(check){
+            editor.putBoolean(DIAL_BACKGROUND_CHECK, check)
+            editor.commit()
+        }
+    var cachedBitmap: String
+        get() = pref.getString(CACHED_BITMAP, "null")
+        set(cachedBitmap){
+            editor.putString(CACHED_BITMAP, cachedBitmap)
+            editor.commit()
+        }
     init {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         editor = pref.edit()
@@ -70,9 +88,12 @@ class PrefManager(internal var _context: Context) {
 
         private val FACE_POSITION = "facePosition"
         private val DIAL_POSITION = "dialPosition"
+        private val HAND_POSITION = "handPosition"
         private val FACE_COLOR =  "faceColor"
         private val FACE_COLOR_DIALOG =  "faceColorDialog"
         private val DIAL_COLOR =  "dialColor"
         private val WHITE_BACKGROUND_CHECK =  "whiteBackgroundCheck"
+        private val DIAL_BACKGROUND_CHECK =  "dialBackgroundCheck"
+        private val CACHED_BITMAP =  "cachedBitmap"
     }
 }

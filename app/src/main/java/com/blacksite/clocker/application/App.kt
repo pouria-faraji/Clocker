@@ -7,6 +7,9 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import com.blacksite.clocker.R
+import com.blacksite.clocker.model.`object`.Dial
+import com.blacksite.clocker.model.`object`.Face
+import com.blacksite.clocker.model.`object`.Hand
 import com.blacksite.clocker.model.db.*
 
 
@@ -17,6 +20,7 @@ import java.util.*
  */
 class App : Application() {
     private var prefManager: PrefManager? = null
+
 
     override fun onCreate() {
         super.onCreate()
@@ -33,6 +37,13 @@ class App : Application() {
             val database = Database()
             database.initialize()
         }
+        var hand= Hand()
+        var face= Face()
+        var dial= Dial()
+        Global.faceListasItem = face.loadFacesAsGridItem()
+        Global.dialLisasItem = dial.loadDialsAsGridItem()
+        Global.handListasItem = hand.loadHandsAsGridItem()
+        Global.handList = hand.loadHands()
     }
 
     fun changeSystemLocaleToEN() {

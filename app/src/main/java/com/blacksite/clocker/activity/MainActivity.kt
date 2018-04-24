@@ -41,6 +41,7 @@ import android.view.View
 import android.widget.AnalogClock
 import android.widget.CompoundButton
 import android.widget.Toast
+import com.blacksite.clocker.model.`object`.Hand
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var prefManager: PrefManager? = null
     var face = Face()
     var dial = Dial()
+    var hand = Hand()
 
     var remoteViews:RemoteViews? = null
     var thisWidget:ComponentName? = null
@@ -85,13 +87,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         white_background_switch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener({
             buttonView, isChecked ->
             if(isChecked){
-                clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[prefManager!!.facePosition].imageWhite!!)
+                clock_face_imageview.setImageResource(Global.faceListasItem[prefManager!!.facePosition].imageWhite!!)
                 prefManager!!.whiteBackgroundCheck = true
             }else{
-                clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[prefManager!!.facePosition].image!!)
+                clock_face_imageview.setImageResource(Global.faceListasItem[prefManager!!.facePosition].image!!)
                 prefManager!!.whiteBackgroundCheck = false
             }
             clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
+        }))
+
+        dial_background_switch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener({
+            buttonView, isChecked ->
+            if(isChecked){
+                clock_dial_imageview.visibility = View.VISIBLE
+                prefManager!!.dialBackgroundCheck = true
+            }else{
+                clock_dial_imageview.visibility = View.GONE
+                prefManager!!.dialBackgroundCheck = false
+            }
         }))
     }
 
@@ -168,30 +181,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun prepareData(model:Any){
         var currentFacePosition = prefManager!!.facePosition
         var currentDialPosition = prefManager!!.dialPosition
+        var currentHandPosition = prefManager!!.handPosition
         if(model is Face){
             adapter!!.makeAllUnselect(currentFacePosition)
         }else if(model is Dial){
             adapter!!.makeAllUnselect(currentDialPosition)
+        }else if(model is Hand){
+            adapter!!.makeAllUnselect(currentHandPosition)
         }
         adapter!!.notifyDataSetChanged()
 
         if(prefManager!!.whiteBackgroundCheck){
-            clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].imageWhite!!)
+            clock_face_imageview.setImageResource(Global.faceListasItem[currentFacePosition].imageWhite!!)
         }else{
-            clock_face_imageview.setImageResource(face.loadFacesAsGridItem()[currentFacePosition].image!!)
+            clock_face_imageview.setImageResource(Global.faceListasItem[currentFacePosition].image!!)
         }
-        clock_dial_imageview.setImageResource(dial.loadDialsAsGridItem()[currentDialPosition].image!!)
+        clock_dial_imageview.setImageResource(Global.dialLisasItem[currentDialPosition].image!!)
         clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
         clock_dial_imageview.setColorFilter(Color.parseColor(prefManager!!.dialColor), PorterDuff.Mode.MULTIPLY)
+
+        hand.makeAllGone(this, Global.handList[currentHandPosition].analogClock!!)
+
+        if(prefManager!!.dialBackgroundCheck){
+            clock_dial_imageview.visibility = View.VISIBLE
+        }else{
+            clock_dial_imageview.visibility = View.GONE
+        }
 
         updateWidget()
 
     }
     fun prepareAdapter(model:Any){
         if(model is Face){
-            itemList = face.loadFacesAsGridItem()
+            itemList = Global.faceListasItem
         }else if(model is Dial){
-            itemList = dial.loadDialsAsGridItem()
+            itemList = Global.dialLisasItem
+        }else if(model is Hand){
+            itemList = Global.handListasItem
         }
 
         adapter = ItemAdapter(this, itemList)
@@ -208,6 +234,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 prefManager!!.facePosition = position
             }else if(model is Dial){
                 prefManager!!.dialPosition = position
+            }else if(model is Hand){
+                prefManager!!.handPosition = position
             }
             prepareData(model)
 
@@ -222,15 +250,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         clock_canvas.destroyDrawingCache()
         clock_canvas.buildDrawingCache()
+//        prefManager!!.cachedBitmap = Global.saveToInternalStorage(clock_canvas.drawingCache)
         remoteViews!!.setImageViewBitmap(R.id.clock_face_imageview_widget, clock_canvas.drawingCache)
 
+        hand.makeAllGoneWidget(Global.handList[prefManager!!.handPosition].analogClockWidget!!, remoteViews!!)
 
-        remoteViews!!.setViewVisibility(R.id.hand_1_widget_grey, View.GONE)
-        remoteViews!!.setViewVisibility(R.id.hand_1_widget_red, View.VISIBLE)
-
-
-        hand_1_grey.visibility = View.GONE
-        hand_1_blue.visibility = View.VISIBLE
 
 //        val intent = Intent(this, MyWidgetProvider::class.java)
 //        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
@@ -269,6 +293,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clock_wallpaper.setImageBitmap(imageRounded)
 
         white_background_switch.isChecked = prefManager!!.whiteBackgroundCheck
+        dial_background_switch.isChecked = prefManager!!.dialBackgroundCheck
     }
     fun prepareDrawer(){
         val toggle = ActionBarDrawerToggle(
@@ -318,6 +343,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_hand -> {
                 main_grid.visibility = View.VISIBLE
                 color_btn_layout.visibility = View.GONE
+                prepareAdapter(hand)
             }
             R.id.nav_color -> {
                 main_grid.visibility = View.GONE
