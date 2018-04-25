@@ -26,7 +26,6 @@ import com.blacksite.clocker.application.Constants
 import com.blacksite.clocker.application.PrefManager
 import com.blacksite.clocker.model.`object`.Face
 import android.content.ComponentName
-import android.widget.RemoteViews
 import android.appwidget.AppWidgetManager
 import android.content.DialogInterface
 import com.blacksite.clocker.model.`object`.Dial
@@ -36,11 +35,12 @@ import android.support.v4.content.ContextCompat
 import android.graphics.drawable.Drawable
 import android.content.Intent
 import android.opengl.Visibility
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import android.widget.AnalogClock
-import android.widget.CompoundButton
-import android.widget.Toast
+import android.widget.*
+import com.blacksite.clocker.adapter.ItemRecyclerAdapter
 import com.blacksite.clocker.model.`object`.Hand
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
@@ -48,12 +48,14 @@ import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import kotlinx.android.synthetic.main.clocks.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var adapter: ItemAdapter? = null
-    var itemList = ArrayList<Item>()
+    var recyclerAdapter: ItemRecyclerAdapter? = null
+    var itemList = mutableListOf<Item>()
     private var prefManager: PrefManager? = null
     var face = Face()
     var dial = Dial()
@@ -72,7 +74,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         prepareDrawer()
         prepareUI()
-        prepareAdapter(face)
+//        prepareAdapter(face)
+        prepareRecycler(face)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Your widget has been created.", Snackbar.LENGTH_LONG)
@@ -183,13 +186,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var currentDialPosition = prefManager!!.dialPosition
         var currentHandPosition = prefManager!!.handPosition
         if(model is Face){
-            adapter!!.makeAllUnselect(currentFacePosition)
+            recyclerAdapter!!.makeAllUnselect(currentFacePosition)
         }else if(model is Dial){
-            adapter!!.makeAllUnselect(currentDialPosition)
+            recyclerAdapter!!.makeAllUnselect(currentDialPosition)
         }else if(model is Hand){
-            adapter!!.makeAllUnselect(currentHandPosition)
+            recyclerAdapter!!.makeAllUnselect(currentHandPosition)
         }
-        adapter!!.notifyDataSetChanged()
+        recyclerAdapter!!.notifyDataSetChanged()
 
         if(prefManager!!.whiteBackgroundCheck){
             clock_face_imageview.setImageResource(Global.faceListasItem[currentFacePosition].imageWhite!!)
@@ -211,26 +214,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         updateWidget()
 
     }
-    fun prepareAdapter(model:Any){
+    fun prepareRecycler(model:Any){
         if(model is Face){
-            itemList = Global.faceListasItem
+            itemList = Global.faceListasItem.toMutableList()
         }else if(model is Dial){
-            itemList = Global.dialLisasItem
+            itemList = Global.dialLisasItem.toMutableList()
         }else if(model is Hand){
-            itemList = Global.handListasItem
+            itemList = Global.handListasItem.toMutableList()
         }
+        main_grid_recycler.setHasFixedSize(false)
+        var layoutManager = GridLayoutManager(this, Constants.NUMBER_ITEMS_EACH_ROW)
+        main_grid_recycler.layoutManager = layoutManager
 
-        adapter = ItemAdapter(this, itemList)
-
-        main_grid.numColumns = Constants.NUMBER_ITEMS_EACH_ROW
-        main_grid.adapter = adapter
-
-        main_grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-            adapter!!.makeAllUnselect(position)
-            adapter!!.notifyDataSetChanged()
-
+        recyclerAdapter = ItemRecyclerAdapter(this, itemList)
+        main_grid_recycler.adapter = recyclerAdapter
+        recyclerAdapter!!.onItemClick = {position ->
+            recyclerAdapter!!.makeAllUnselect(position)
+            recyclerAdapter!!.notifyDataSetChanged()
             if(model is Face){
-//                clock_face_imageview.setImageResource(itemList[position].image!!)
                 prefManager!!.facePosition = position
             }else if(model is Dial){
                 prefManager!!.dialPosition = position
@@ -238,12 +239,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 prefManager!!.handPosition = position
             }
             prepareData(model)
-
-//            updateWidget(position)
         }
-
         prepareData(model)
     }
+//    fun prepareAdapter(model:Any){
+//        if(model is Face){
+//            itemList = Global.faceListasItem
+//        }else if(model is Dial){
+//            itemList = Global.dialLisasItem
+//        }else if(model is Hand){
+//            itemList = Global.handListasItem
+//        }
+//
+//        adapter = ItemAdapter(this, itemList)
+//
+//        main_grid.numColumns = Constants.NUMBER_ITEMS_EACH_ROW
+//        main_grid.adapter = adapter
+//
+//        main_grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+//            adapter!!.makeAllUnselect(position)
+//            adapter!!.notifyDataSetChanged()
+//
+//            if(model is Face){
+////                clock_face_imageview.setImageResource(itemList[position].image!!)
+//                prefManager!!.facePosition = position
+//            }else if(model is Dial){
+//                prefManager!!.dialPosition = position
+//            }else if(model is Hand){
+//                prefManager!!.handPosition = position
+//            }
+//            prepareData(model)
+//
+////            updateWidget(position)
+//        }
+//
+//        prepareData(model)
+//    }
+
     fun updateWidget(){
         remoteViews = RemoteViews(this.packageName, R.layout.widget)
         thisWidget = ComponentName(this, MyWidgetProvider::class.java)
@@ -257,6 +289,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         hand.makeAllGoneWidget(Global.handList[prefManager!!.handPosition].analogClockWidget!!, remoteViews!!)
 
+
+        updateHeader()
 
 //        val intent = Intent(this, MyWidgetProvider::class.java)
 //        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
@@ -296,6 +330,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         white_background_switch.isChecked = prefManager!!.whiteBackgroundCheck
         dial_background_switch.isChecked = prefManager!!.dialBackgroundCheck
+
+
     }
     fun prepareDrawer(){
         val toggle = ActionBarDrawerToggle(
@@ -304,6 +340,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+
+    }
+    fun updateHeader(){
+        var navigationView = findViewById(R.id.nav_view) as NavigationView
+        var headerView = navigationView.getHeaderView(0)
+        var headerImage = headerView.findViewById<ImageView>(R.id.imageView_header)
+
+        var size = Global.getAppWidth()/5
+        headerImage.layoutParams.width = size
+        headerImage.layoutParams.height = size
+
+        if(prefManager!!.cachedBitmap != "null") {
+            headerImage.setImageBitmap(Global.loadImageFromStorage(prefManager!!.cachedBitmap))
+        }else{
+            headerImage.setImageResource(R.drawable.clock_256)
+        }
     }
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -333,22 +386,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_face -> {
-                main_grid.visibility = View.VISIBLE
+                main_grid_recycler.visibility = View.VISIBLE
                 color_btn_layout.visibility = View.GONE
-                prepareAdapter(face)
+                recyclerAdapter!!.clear()
+                prepareRecycler(face)
             }
             R.id.nav_dial -> {
-                main_grid.visibility = View.VISIBLE
+                main_grid_recycler.visibility = View.VISIBLE
                 color_btn_layout.visibility = View.GONE
-                prepareAdapter(dial)
+                recyclerAdapter!!.clear()
+                prepareRecycler(dial)
             }
             R.id.nav_hand -> {
-                main_grid.visibility = View.VISIBLE
+                main_grid_recycler.visibility = View.VISIBLE
                 color_btn_layout.visibility = View.GONE
-                prepareAdapter(hand)
+                recyclerAdapter!!.clear()
+                prepareRecycler(hand)
             }
             R.id.nav_color -> {
-                main_grid.visibility = View.GONE
+                main_grid_recycler.visibility = View.GONE
                 color_btn_layout.visibility = View.VISIBLE
             }
         }

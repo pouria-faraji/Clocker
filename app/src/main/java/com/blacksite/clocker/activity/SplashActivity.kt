@@ -13,6 +13,7 @@ import kotlin.concurrent.timerTask
 
 class SplashActivity : AppCompatActivity() {
     private var prefManager: PrefManager? = null
+    var splashThread: Thread? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +22,26 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar!!.hide()
         prefManager = PrefManager(App.appContext!!)
 
-        Handler().postDelayed({
-            val mainIntent = Intent(this@SplashActivity,
-                    MainActivity::class.java)
-            prefManager!!.isFirstTimeLaunch = false
-            startActivity(mainIntent)
-            this.finish()
-        }, 5000)
+        splashThread = Thread{
+            try {
+                var waited = 0
+                while (waited < 3000) {
+                    Thread.sleep(100)
+                    waited += 100
+                }
+                val mainIntent = Intent(this@SplashActivity,
+                        MainActivity::class.java)
+                startActivity(mainIntent)
+                this.finish()
+            }catch (e:InterruptedException){
+                Log.e("logger", "Interrupted")
+            }
+        }
+
+        splashThread!!.start()
+//        Handler().postDelayed({
+//
+//        }, 3000)
     }
 
     fun startAnimation():Unit {
@@ -38,5 +52,13 @@ class SplashActivity : AppCompatActivity() {
         super.onPause()
         Log.e("logger", "onPause")
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        Log.e("logger", "onStop")
+        if (splashThread!!.isAlive()) {
+            splashThread!!.interrupt()
+        }
     }
 }

@@ -36,6 +36,7 @@ class App : Application() {
         if (prefManager!!.isFirstTimeLaunch) run {
             val database = Database()
             database.initialize()
+            prefManager!!.isFirstTimeLaunch = false
         }
         var hand= Hand()
         var face= Face()

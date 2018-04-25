@@ -57,7 +57,7 @@ class PrefManager(internal var _context: Context) {
             editor.commit()
         }
     var whiteBackgroundCheck: Boolean
-        get() = pref.getBoolean(WHITE_BACKGROUND_CHECK, false)
+        get() = pref.getBoolean(WHITE_BACKGROUND_CHECK, true)
         set(check){
             editor.putBoolean(WHITE_BACKGROUND_CHECK, check)
             editor.commit()
