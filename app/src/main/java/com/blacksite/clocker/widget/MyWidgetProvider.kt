@@ -43,7 +43,7 @@ class MyWidgetProvider : AppWidgetProvider() {
 //                views!!.setImageViewResource(R.id.clock_face_imageview_widget, R.drawable.splash_red)
             }
 
-            hand.makeAllGoneWidget(hand.loadHands()[prefManager!!.handPosition].analogClockWidget!!, views!!)
+            hand.makeAllGoneWidget(context, hand.loadHands()[prefManager!!.handPosition].number!!, prefManager!!.colorCode,views!!)
 
 
             val choiceIntent = Intent(context, MainActivity::class.java)

@@ -22,19 +22,31 @@ public class HandDB {
     @Property(nameInDb = "image")
     private Integer image;
 
+    @Property(nameInDb = "number")
+    private Integer number;
 
 
-    @Generated(hash = 42490084)
+
+
+
+
+
+    @Generated(hash = 891784439)
     public HandDB(Long id, Integer analogClock, Integer analogClockWidget,
-            Integer image) {
+            Integer image, Integer number) {
         this.id = id;
         this.analogClock = analogClock;
         this.analogClockWidget = analogClockWidget;
         this.image = image;
+        this.number = number;
     }
     @Generated(hash = 971599506)
     public HandDB() {
     }
+
+
+
+
 
 
     
@@ -61,5 +73,11 @@ public class HandDB {
     }
     public void setAnalogClockWidget(Integer analogClockWidget) {
         this.analogClockWidget = analogClockWidget;
+    }
+    public Integer getNumber() {
+        return this.number;
+    }
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }

@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clock_face_imageview.colorFilter = LightingColorFilter(Color.WHITE, Color.parseColor(prefManager!!.faceColor))
         clock_dial_imageview.setColorFilter(Color.parseColor(prefManager!!.dialColor), PorterDuff.Mode.MULTIPLY)
 
-        hand.makeAllGone(this, Global.handList[currentHandPosition].analogClock!!)
+        hand.makeAllGone(this, Global.handList[currentHandPosition].number!!, prefManager!!.colorCode)
 
         if(prefManager!!.dialBackgroundCheck){
             clock_dial_imageview.visibility = View.VISIBLE
@@ -290,7 +290,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         remoteViews!!.setImageViewBitmap(R.id.clock_face_imageview_widget, clock_canvas.drawingCache)
 
-        hand.makeAllGoneWidget(Global.handList[prefManager!!.handPosition].analogClockWidget!!, remoteViews!!)
+        hand.makeAllGoneWidget(this, Global.handList[prefManager!!.handPosition].number!!, prefManager!!.colorCode , remoteViews!!)
 
 
         updateHeader()

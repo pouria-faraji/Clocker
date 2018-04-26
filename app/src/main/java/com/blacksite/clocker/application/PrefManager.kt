@@ -74,6 +74,12 @@ class PrefManager(internal var _context: Context) {
             editor.putString(CACHED_BITMAP, cachedBitmap)
             editor.commit()
         }
+    var colorCode: Int
+        get() = pref.getInt(COLOR_CODE, 1)
+        set(colorCode){
+            editor.putInt(COLOR_CODE, colorCode)
+            editor.commit()
+        }
     init {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         editor = pref.edit()
@@ -95,5 +101,6 @@ class PrefManager(internal var _context: Context) {
         private val WHITE_BACKGROUND_CHECK =  "whiteBackgroundCheck"
         private val DIAL_BACKGROUND_CHECK =  "dialBackgroundCheck"
         private val CACHED_BITMAP =  "cachedBitmap"
+        private val COLOR_CODE =  "colorCode"
     }
 }

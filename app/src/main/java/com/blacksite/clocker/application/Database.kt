@@ -23,27 +23,6 @@ class Database {
         faceList.add(Face(R.drawable.lion_512, R.drawable.lion_512_w))
         faceList.add(Face(R.drawable.tiger_512, R.drawable.tiger_512_w))
         faceList.add(Face(R.drawable.panther_512, R.drawable.panther_512_w))
-
-        faceList.add(Face(R.drawable.skull_512, R.drawable.skull_512))
-        faceList.add(Face(R.drawable.jellyfish_512, R.drawable.jellyfish_512))
-        faceList.add(Face(R.drawable.lion_512, R.drawable.lion_512_w))
-        faceList.add(Face(R.drawable.tiger_512, R.drawable.tiger_512_w))
-        faceList.add(Face(R.drawable.panther_512, R.drawable.panther_512_w))
-        faceList.add(Face(R.drawable.skull_512, R.drawable.skull_512))
-        faceList.add(Face(R.drawable.jellyfish_512, R.drawable.jellyfish_512))
-        faceList.add(Face(R.drawable.lion_512, R.drawable.lion_512_w))
-        faceList.add(Face(R.drawable.tiger_512, R.drawable.tiger_512_w))
-        faceList.add(Face(R.drawable.panther_512, R.drawable.panther_512_w))
-        faceList.add(Face(R.drawable.skull_512, R.drawable.skull_512))
-        faceList.add(Face(R.drawable.jellyfish_512, R.drawable.jellyfish_512))
-        faceList.add(Face(R.drawable.lion_512, R.drawable.lion_512_w))
-        faceList.add(Face(R.drawable.tiger_512, R.drawable.tiger_512_w))
-        faceList.add(Face(R.drawable.panther_512, R.drawable.panther_512_w))
-        faceList.add(Face(R.drawable.skull_512, R.drawable.skull_512))
-        faceList.add(Face(R.drawable.jellyfish_512, R.drawable.jellyfish_512))
-        faceList.add(Face(R.drawable.lion_512, R.drawable.lion_512_w))
-        faceList.add(Face(R.drawable.tiger_512, R.drawable.tiger_512_w))
-        faceList.add(Face(R.drawable.panther_512, R.drawable.panther_512_w))
         for (face in faceList){
             face.insert()
         }
@@ -59,8 +38,8 @@ class Database {
     }
     fun setupHand(){
         var handList = ArrayList<Hand>()
-        handList.add(Hand(R.id.hand_1_grey, R.id.hand_1_widget_grey,R.drawable.hand_1_grey))
-        handList.add(Hand(R.id.hand_1_red, R.id.hand_1_widget_red,R.drawable.hand_1_red))
+        handList.add(Hand(R.id.hand_1_grey, R.id.hand_1_widget_grey,R.drawable.hand_1_grey,1))
+        handList.add(Hand(R.id.hand_1_red, R.id.hand_1_widget_red,R.drawable.hand_1_red,1))
         for(hand in handList){
             hand.insert()
         }

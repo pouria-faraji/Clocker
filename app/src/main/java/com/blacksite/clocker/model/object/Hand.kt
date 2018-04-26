@@ -1,6 +1,7 @@
 package com.blacksite.clocker.model.`object`
 
 import android.app.Activity
+import android.content.Context
 import android.view.View
 import android.widget.AnalogClock
 import android.widget.RemoteViews
@@ -19,6 +20,9 @@ class Hand {
     public var analogClock: Int? = null
     public var analogClockWidget: Int? = null
     private var image: Int? = null
+
+    var number:Int? = null
+
     private var _handDBDao: HandDBDao? = null
 
 
@@ -44,19 +48,21 @@ class Hand {
     }
 
 
-    constructor(analogClock: Int?, analogClockWidget: Int?, image: Int?) {
+    constructor(analogClock: Int?, analogClockWidget: Int?, image: Int?, number: Int?) {
         this.analogClock = analogClock
         this.analogClockWidget = analogClockWidget
         this.image = image
+        this.number = number
         val daoSession = App.daoSession
         _handDBDao = daoSession!!.handDBDao
     }
 
-    constructor(id: Long?, analogClock: Int?, analogClockWidget: Int?, image: Int?) {
+    constructor(id: Long?, analogClock: Int?, analogClockWidget: Int?, image: Int?, number: Int?) {
         this.id = id
         this.analogClock = analogClock
         this.analogClockWidget = analogClockWidget
         this.image = image
+        this.number = number
     }
 
     fun insert(){
@@ -64,12 +70,13 @@ class Hand {
         handDB.analogClock = this.analogClock
         handDB.analogClockWidget = this.analogClockWidget
         handDB.image = this.image
+        handDB.number = this.number
         this.id = _handDBDao!!.insert(handDB)
     }
     fun loadHands():ArrayList<Hand>{
         var result = ArrayList<Hand>()
         for(handDB in _handDBDao!!.loadAll()){
-            var hand = Hand(handDB.id, handDB.analogClock, handDB.analogClockWidget,handDB.image)
+            var hand = Hand(handDB.id, handDB.analogClock, handDB.analogClockWidget,handDB.image,handDB.number)
             result.add(hand)
         }
         return result
@@ -82,22 +89,42 @@ class Hand {
         }
         return result
     }
-    fun makeAllGone(context: Activity, analogClockReference:Int){
-        var analogClock = context.findViewById<AnalogClock>(analogClockReference)
+    fun makeAllGone(context: Activity, number:Int, colorCode:Int){
+        var resourceName = "hand_" + number + "_" + getColorNameByCode(colorCode)
+        var resourceID = context.resources.getIdentifier(resourceName, "id", context.packageName)
+        var analogClock = context.findViewById<AnalogClock>(resourceID)
         for(i in Global.handList.indices){
-            var temp = context.findViewById<AnalogClock>(Global.handList[i].analogClock!!)
-            temp.visibility = View.GONE
-        }
-        analogClock.visibility = View.VISIBLE
-    }
-    fun makeAllGoneWidget(analogClockReference:Int, remoteViews:RemoteViews){
-//        var analogClock = context.findViewById<AnalogClock>(analogClockReference)
-        for(hand in Global.handList){
-            remoteViews.setViewVisibility(hand.analogClockWidget!!, View.GONE)
+            for(j in 1..4){
+                var resourceNameTemp = "hand_" + Global.handList[i].number + "_" + getColorNameByCode(j)
+                var resourceIDTemp = context.resources.getIdentifier(resourceNameTemp, "id", context.packageName)
+                var temp = context.findViewById<AnalogClock>(resourceIDTemp)
+                temp.visibility = View.GONE
+            }
 //            var temp = context.findViewById<AnalogClock>(Global.handList[i].analogClock!!)
 //            temp.visibility = View.GONE
         }
-        remoteViews.setViewVisibility(analogClockReference, View.VISIBLE)
-//        analogClock.visibility = View.VISIBLE
+        analogClock.visibility = View.VISIBLE
+    }
+    fun makeAllGoneWidget(context: Context, number:Int, colorCode:Int, remoteViews:RemoteViews){
+        var resourceName = "hand_" + number + "_widget_" + getColorNameByCode(colorCode)
+        var resourceID = context.resources.getIdentifier(resourceName, "id", context.packageName)
+        for(hand in Global.handList){
+            for(i in 1..4){
+                var resourceNameTemp = "hand_" + hand.number + "_widget_" + getColorNameByCode(i)
+                var resourceIDTemp = context.resources.getIdentifier(resourceNameTemp, "id", context.packageName)
+                remoteViews.setViewVisibility(resourceIDTemp, View.GONE)
+            }
+//            remoteViews.setViewVisibility(hand.analogClockWidget!!, View.GONE)
+        }
+        remoteViews.setViewVisibility(resourceID, View.VISIBLE)
+    }
+    fun getColorNameByCode(code:Int):String{
+        when(code){
+            1 -> return "grey"
+            2 -> return "blue"
+            3 -> return "red"
+            4 -> return "green"
+            else -> return "grey"
+        }
     }
 }
