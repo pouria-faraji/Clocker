@@ -72,6 +72,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         prefManager = PrefManager(App.appContext!!)
 
+        Global.reducedBitmaps.clear()
+        Global.generateReducedBitmaps()
+
         prepareDrawer()
         prepareUI()
 //        prepareAdapter(face)
@@ -411,5 +414,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Global.reducedBitmaps.clear()
     }
 }

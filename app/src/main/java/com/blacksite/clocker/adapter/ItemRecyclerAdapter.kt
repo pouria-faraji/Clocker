@@ -53,7 +53,8 @@ class ItemRecyclerAdapter: Adapter<ItemRecyclerAdapter.ViewHolder> {
     override fun onBindViewHolder(holder: ItemRecyclerAdapter.ViewHolder, position: Int) {
         val item = this.itemsList!![position]
 //        holder.imageView.setImageDrawable(Global.reduceImage(item.image!!))
-        holder.imageView.setImageResource(item.image!!)
+//        holder.imageView.setImageResource(item.image!!)
+        holder.imageView.setImageBitmap(Global.reducedBitmaps.get(item.image!!))
         var size = ((0.7) * Global.getAppWidth()/Constants.NUMBER_ITEMS_EACH_ROW).toInt()
         holder.imageView.layoutParams.width = size
         holder.imageView.layoutParams.height = size

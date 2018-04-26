@@ -45,6 +45,8 @@ class App : Application() {
         Global.dialLisasItem = dial.loadDialsAsGridItem()
         Global.handListasItem = hand.loadHandsAsGridItem()
         Global.handList = hand.loadHands()
+
+
     }
 
     fun changeSystemLocaleToEN() {

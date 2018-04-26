@@ -22,6 +22,7 @@ import java.io.*
  */
 class Global {
     companion object {
+        var reducedBitmaps = HashMap<Int,Bitmap>()
         var faceListasItem = ArrayList<Item>()
         var dialLisasItem = ArrayList<Item>()
         var handListasItem = ArrayList<Item>()
@@ -95,6 +96,22 @@ class Global {
                 return b!!
             }
 
+        }
+        fun reduceImageAsBitmap(resource:Int):Bitmap{
+            var bitmap = (ContextCompat.getDrawable(App.appContext, resource) as BitmapDrawable).bitmap
+            var reducedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width/5, bitmap.height/5, true)
+            return reducedBitmap
+        }
+        fun generateReducedBitmaps(){
+            for(item in faceListasItem){
+                reducedBitmaps.put(item.image!!, reduceImageAsBitmap(item.image!!))
+            }
+            for(item in dialLisasItem){
+                reducedBitmaps.put(item.image!!, reduceImageAsBitmap(item.image!!))
+            }
+            for(item in handListasItem){
+                reducedBitmaps.put(item.image!!, reduceImageAsBitmap(item.image!!))
+            }
         }
     }
 
