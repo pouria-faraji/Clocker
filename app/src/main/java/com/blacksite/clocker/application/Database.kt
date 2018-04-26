@@ -38,8 +38,7 @@ class Database {
     }
     fun setupHand(){
         var handList = ArrayList<Hand>()
-        handList.add(Hand(R.id.hand_1_grey, R.id.hand_1_widget_grey,R.drawable.hand_1_grey,1))
-        handList.add(Hand(R.id.hand_1_red, R.id.hand_1_widget_red,R.drawable.hand_1_red,1))
+        handList.add(Hand(R.drawable.hand_1_grey,1))
         for(hand in handList){
             hand.insert()
         }

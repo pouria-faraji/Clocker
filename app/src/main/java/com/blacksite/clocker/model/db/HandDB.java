@@ -13,12 +13,6 @@ public class HandDB {
     @Id
     private Long id;
 
-    @Property(nameInDb = "analog_clock")
-    private Integer analogClock;
-
-    @Property(nameInDb = "analog_clock_widget")
-    private Integer analogClockWidget;
-
     @Property(nameInDb = "image")
     private Integer image;
 
@@ -27,26 +21,15 @@ public class HandDB {
 
 
 
-
-
-
-
-    @Generated(hash = 891784439)
-    public HandDB(Long id, Integer analogClock, Integer analogClockWidget,
-            Integer image, Integer number) {
+    @Generated(hash = 1583770035)
+    public HandDB(Long id, Integer image, Integer number) {
         this.id = id;
-        this.analogClock = analogClock;
-        this.analogClockWidget = analogClockWidget;
         this.image = image;
         this.number = number;
     }
     @Generated(hash = 971599506)
     public HandDB() {
     }
-
-
-
-
 
 
     
@@ -56,24 +39,13 @@ public class HandDB {
     public void setId(Long id) {
         this.id = id;
     }
-    public Integer getAnalogClock() {
-        return this.analogClock;
-    }
-    public void setAnalogClock(Integer analogClock) {
-        this.analogClock = analogClock;
-    }
     public Integer getImage() {
         return this.image;
     }
     public void setImage(Integer image) {
         this.image = image;
     }
-    public Integer getAnalogClockWidget() {
-        return this.analogClockWidget;
-    }
-    public void setAnalogClockWidget(Integer analogClockWidget) {
-        this.analogClockWidget = analogClockWidget;
-    }
+
     public Integer getNumber() {
         return this.number;
     }

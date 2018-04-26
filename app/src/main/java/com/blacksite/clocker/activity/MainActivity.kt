@@ -42,12 +42,14 @@ import android.view.View
 import android.widget.*
 import com.blacksite.clocker.adapter.ItemRecyclerAdapter
 import com.blacksite.clocker.model.`object`.Hand
+import com.blacksite.clocker.view.HandColorDialog
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import kotlinx.android.synthetic.main.clocks.*
+import kotlinx.android.synthetic.main.hand_color_dialog.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 
@@ -90,6 +92,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         face_color_btn.setOnClickListener(showFaceColorClickListener)
         dial_color_btn.setOnClickListener(showDialColorClickListener)
+        hand_color_btn.setOnClickListener(showHandColorClickListener)
         white_background_switch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener({
             buttonView, isChecked ->
             if(isChecked){
@@ -118,6 +121,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onResume()
     }
 
+    var showHandColorClickListener = View.OnClickListener { view ->
+        showHandColorDialog()
+    }
+    fun showHandColorDialog(){
+        var currentHandPosition = prefManager!!.handPosition
+        var dialog = HandColorDialog(this)
+        dialog.show()
+        dialog.hand_color_dialog_ok_button.setOnClickListener {
+            prefManager!!.colorCode = dialog.selectedColorCode
+            hand.makeAllGone(this, Global.handList[currentHandPosition].number!!, prefManager!!.colorCode)
+            dialog.dismiss()
+        }
+    }
     val showDialColorClickListener = View.OnClickListener { view ->
         showDialColorDialog()
     }

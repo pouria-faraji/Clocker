@@ -14,6 +14,7 @@ import com.blacksite.clocker.model.`object`.Face
 import com.blacksite.clocker.model.`object`.Hand
 import android.content.ContextWrapper
 import android.graphics.BitmapFactory
+import com.blacksite.clocker.R
 import java.io.*
 
 
@@ -111,6 +112,33 @@ class Global {
             }
             for(item in handListasItem){
                 reducedBitmaps.put(item.image!!, reduceImageAsBitmap(item.image!!))
+            }
+        }
+        fun getColorNameByCode(code:Int):String{
+            when(code){
+                1 -> return "grey"
+                2 -> return "blue"
+                3 -> return "red"
+                4 -> return "green"
+                else -> return "grey"
+            }
+        }
+        fun getCircleResourceByColorCode(code:Int):Int{
+            when(code){
+                1 -> return R.drawable.grey_circle
+                2 -> return R.drawable.blue_circle
+                3 -> return R.drawable.red_circle
+                4 -> return R.drawable.green_circle
+                else -> return R.drawable.grey_circle
+            }
+        }
+        fun getSelectedCircleResourceByColorCode(code:Int):Int{
+            when(code){
+                1 -> return R.drawable.grey_circle_selected
+                2 -> return R.drawable.blue_circle_selected
+                3 -> return R.drawable.red_circle_selected
+                4 -> return R.drawable.green_circle_selected
+                else -> return R.drawable.grey_circle_selected
             }
         }
     }

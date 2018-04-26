@@ -23,10 +23,8 @@ public class HandDBDao extends AbstractDao<HandDB, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property AnalogClock = new Property(1, Integer.class, "analogClock", false, "analog_clock");
-        public final static Property AnalogClockWidget = new Property(2, Integer.class, "analogClockWidget", false, "analog_clock_widget");
-        public final static Property Image = new Property(3, Integer.class, "image", false, "image");
-        public final static Property Number = new Property(4, Integer.class, "number", false, "number");
+        public final static Property Image = new Property(1, Integer.class, "image", false, "image");
+        public final static Property Number = new Property(2, Integer.class, "number", false, "number");
     }
 
 
@@ -43,10 +41,8 @@ public class HandDBDao extends AbstractDao<HandDB, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"hand\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"analog_clock\" INTEGER," + // 1: analogClock
-                "\"analog_clock_widget\" INTEGER," + // 2: analogClockWidget
-                "\"image\" INTEGER," + // 3: image
-                "\"number\" INTEGER);"); // 4: number
+                "\"image\" INTEGER," + // 1: image
+                "\"number\" INTEGER);"); // 2: number
     }
 
     /** Drops the underlying database table. */
@@ -64,24 +60,14 @@ public class HandDBDao extends AbstractDao<HandDB, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer analogClock = entity.getAnalogClock();
-        if (analogClock != null) {
-            stmt.bindLong(2, analogClock);
-        }
- 
-        Integer analogClockWidget = entity.getAnalogClockWidget();
-        if (analogClockWidget != null) {
-            stmt.bindLong(3, analogClockWidget);
-        }
- 
         Integer image = entity.getImage();
         if (image != null) {
-            stmt.bindLong(4, image);
+            stmt.bindLong(2, image);
         }
  
         Integer number = entity.getNumber();
         if (number != null) {
-            stmt.bindLong(5, number);
+            stmt.bindLong(3, number);
         }
     }
 
@@ -94,24 +80,14 @@ public class HandDBDao extends AbstractDao<HandDB, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer analogClock = entity.getAnalogClock();
-        if (analogClock != null) {
-            stmt.bindLong(2, analogClock);
-        }
- 
-        Integer analogClockWidget = entity.getAnalogClockWidget();
-        if (analogClockWidget != null) {
-            stmt.bindLong(3, analogClockWidget);
-        }
- 
         Integer image = entity.getImage();
         if (image != null) {
-            stmt.bindLong(4, image);
+            stmt.bindLong(2, image);
         }
  
         Integer number = entity.getNumber();
         if (number != null) {
-            stmt.bindLong(5, number);
+            stmt.bindLong(3, number);
         }
     }
 
@@ -124,10 +100,8 @@ public class HandDBDao extends AbstractDao<HandDB, Long> {
     public HandDB readEntity(Cursor cursor, int offset) {
         HandDB entity = new HandDB( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // analogClock
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // analogClockWidget
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // image
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4) // number
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // image
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2) // number
         );
         return entity;
     }
@@ -135,10 +109,8 @@ public class HandDBDao extends AbstractDao<HandDB, Long> {
     @Override
     public void readEntity(Cursor cursor, HandDB entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setAnalogClock(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setAnalogClockWidget(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setImage(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setNumber(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setImage(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setNumber(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
      }
     
     @Override
