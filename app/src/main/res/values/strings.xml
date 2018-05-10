@@ -6,4 +6,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Change the following strings as required -->
+    <string name="back4app_app_id">MBW2pkjf5FdTnGjUo0jbscZj4t6rtiFKG7iz05vj</string>
+    <string name="back4app_client_key">FcGX0y8cUlCQbSsFZ3koMYomyezO71JStCJyRVSo</string>
 </resources>

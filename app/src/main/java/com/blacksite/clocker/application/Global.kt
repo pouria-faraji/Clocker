@@ -56,7 +56,7 @@ class Global {
             return px.toInt()
         }
         fun reduceImage(resource:Int):Drawable{
-            var bitmap = (ContextCompat.getDrawable(App.appContext, resource) as BitmapDrawable).bitmap
+            var bitmap = (ContextCompat.getDrawable(App.appContext!!, resource) as BitmapDrawable).bitmap
             var reducedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width/35, bitmap.height/35, true)
             return BitmapDrawable(App.appContext!!.resources, reducedBitmap)
         }
@@ -99,7 +99,7 @@ class Global {
 
         }
         fun reduceImageAsBitmap(resource:Int):Bitmap{
-            var bitmap = (ContextCompat.getDrawable(App.appContext, resource) as BitmapDrawable).bitmap
+            var bitmap = (ContextCompat.getDrawable(App.appContext!!, resource) as BitmapDrawable).bitmap
             var reducedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width/5, bitmap.height/5, true)
             return reducedBitmap
         }

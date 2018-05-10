@@ -63,9 +63,9 @@ class ItemRecyclerAdapter: Adapter<ItemRecyclerAdapter.ViewHolder> {
         params1.setMargins(margin,margin,margin,margin)
         holder.layout.layoutParams = params1
         if(hashMapSelected!![position] == true){
-            holder.layout.background = ContextCompat.getDrawable(context, R.drawable.item_background_selected)
+            holder.layout.background = ContextCompat.getDrawable(context!!, R.drawable.item_background_selected)
         }else{
-            holder.layout.background = ContextCompat.getDrawable(context, R.drawable.item_background)
+            holder.layout.background = ContextCompat.getDrawable(context!!, R.drawable.item_background)
         }
 //        holder.layout.setOnClickListener(View.OnClickListener {
 //

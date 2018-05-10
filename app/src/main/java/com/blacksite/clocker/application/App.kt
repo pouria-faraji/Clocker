@@ -11,6 +11,7 @@ import com.blacksite.clocker.model.`object`.Dial
 import com.blacksite.clocker.model.`object`.Face
 import com.blacksite.clocker.model.`object`.Hand
 import com.blacksite.clocker.model.db.*
+import com.parse.Parse
 
 
 import java.util.*
@@ -26,6 +27,11 @@ class App : Application() {
         super.onCreate()
         changeSystemLocaleToEN()
         App.appContext = applicationContext
+        Parse.initialize(Parse.Configuration.Builder(this)
+                .applicationId(App.appContext!!.resources.getString(R.string.back4app_app_id))
+                .clientKey(App.appContext!!.resources.getString(R.string.back4app_client_key))
+                .server(App.appContext!!.resources.getString(R.string.back4app_server_url))
+                .build())
 
         val helper = DaoMaster.DevOpenHelper(this, "clocker_DB")
         val db = helper.writableDb

@@ -48,6 +48,7 @@ import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
+import com.parse.*
 import kotlinx.android.synthetic.main.clocks.*
 import kotlinx.android.synthetic.main.hand_color_dialog.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ParseInstallation.getCurrentInstallation().saveInBackground()
         setSupportActionBar(toolbar)
         supportActionBar!!.title = "Clocker"
 
@@ -363,7 +365,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
     fun updateHeader(){
-        var navigationView = findViewById(R.id.nav_view) as NavigationView
+        var navigationView = findViewById<NavigationView>(R.id.nav_view) as NavigationView
         var headerView = navigationView.getHeaderView(0)
         var headerImage = headerView.findViewById<ImageView>(R.id.imageView_header)
 

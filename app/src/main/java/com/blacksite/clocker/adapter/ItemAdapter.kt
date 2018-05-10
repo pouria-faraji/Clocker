@@ -61,9 +61,9 @@ class ItemAdapter:BaseAdapter {
         val params1 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Global.getAppWidth()/Constants.NUMBER_ITEMS_EACH_ROW)
         viewHolder!!.layout!!.layoutParams = params1
         if(hashMapSelected!![position] == true){
-            viewHolder!!.layout!!.background = ContextCompat.getDrawable(context, R.drawable.item_background_selected)
+            viewHolder!!.layout!!.background = ContextCompat.getDrawable(context!!, R.drawable.item_background_selected)
         }else{
-            viewHolder!!.layout!!.background = ContextCompat.getDrawable(context, R.drawable.item_background)
+            viewHolder!!.layout!!.background = ContextCompat.getDrawable(context!!, R.drawable.item_background)
         }
 
 
