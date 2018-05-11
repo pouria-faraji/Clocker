@@ -23,6 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding.enabled = true
 }
 greendao {
     targetGenDir 'src/main/java'
@@ -42,6 +43,7 @@ dependencies {
     compile 'com.github.QuadFlask:colorpicker:0.0.13'
 
     compile 'com.parse:parse-android:1.17.3' //update version to the latest one
+    kapt "com.android.databinding:compiler:3.0.0-beta1"
 }
 repositories {
     mavenCentral()
